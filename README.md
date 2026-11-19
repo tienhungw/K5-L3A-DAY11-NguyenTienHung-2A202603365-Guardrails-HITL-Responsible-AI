@@ -1,5 +1,34 @@
 # Day 11 — Controlled Agent Security (2026)
 
+## 🧑‍🎓 Bài nộp
+
+| | |
+|---|---|
+| **Họ tên** | Nguyễn Tiến Hưng |
+| **MSSV** | 2A202603365 |
+| **Lớp** | L3A-H209 |
+| **Blue** | OpenRouter `liquid/lfm-3-1.7b:free` |
+| **Red / Red Advance** | Gemini `gemini-3.5-flash` (`RED_TEAM_PROVIDER=gemini`) |
+
+**Phần đã làm**
+
+- **CP2** — [`input_guardrails.py`](src/guardrails/input_guardrails.py): chuẩn hoá Unicode (NFKC, bỏ ký tự ẩn zero-width, gộp ký tự đồng hình, leetspeak, bỏ dấu tiếng Việt) rồi dò injection bằng regex nhiều lớp (EN + VI, trích xuất secret, đóng gói mã hoá, giả quyền trong email/RAG, SQL injection); topic filter theo ranh giới từ. [`output_guardrails.py`](src/guardrails/output_guardrails.py): che SĐT / email / CCCD; secret (password, `sk-…`, `*.internal`, secret bị che giấu) → giữ lại toàn bộ câu trả lời.
+- **CP3** — [`rate_limiter.py`](src/assignment/rate_limiter.py) (sliding window theo user), [`audit_log.py`](src/assignment/audit_log.py) (latency, layer, tự redact trước khi ghi đĩa), [`monitoring.py`](src/assignment/monitoring.py) (block rate, rate-limit hits, LLM errors, alerts), [`pipeline.py`](src/assignment/pipeline.py) (`BluePipeline`: RateLimit → Input → LLM → Output, audit/monitor đứng ngoài quan sát; `is_egress_allowed` = allowlist HTTPS khớp chính xác host + chặn payload nhạy cảm).
+- **CP4** — 5 prompt tấn công trong [`attacks.py`](src/attacks/attacks.py): Completion, Translation/JSON, Creative writing, Confirmation, Multi-step.
+
+**Chạy lại (từ gốc repo, sau khi điền `.env`)**
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+python src/main.py --part 2   # CP2 — in terminal
+python src/main.py --part 3   # CP3 — outputs/results.json, audit_log.json, metrics.json
+python src/main.py --part 4   # CP4 — outputs/attack_results.json (+ chi tiết Red / Red Advance)
+pytest tests/smoke -q; pytest tests/public -q
+python scripts/grade.py --submission-dir . --out outputs/grade_report.json
+```
+
+---
+
 > 👤 **Hình thức:** bài tập **cá nhân** (1 người / 1 MSSV).  
 > 🎯 **Mục tiêu:** đóng vai **Blue Team** để học cách xây Guardrails phòng thủ, rồi đóng vai **Red Team** để tấn công agent **Red** hoặc **Red Advance**.  
 > ✅ Làm theo **Checkpoint 1 → 5** trong [`CHECKPOINTS.md`](CHECKPOINTS.md) · nộp theo [`SUBMISSION.md`](SUBMISSION.md).

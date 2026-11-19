@@ -1,0 +1,42 @@
+{
+  "total_requests": 39,
+  "blocked_requests": 20,
+  "block_rate": 0.5128205128205128,
+  "rate_limit_hits": 5,
+  "judge_checks": 0,
+  "judge_fails": 0,
+  "judge_fail_rate": 0.0,
+  "blocked_by_layer": {
+    "input_guardrail": 15,
+    "rate_limiter": 5
+  },
+  "output_redactions": 0,
+  "egress_denied": 6,
+  "llm_errors": 0,
+  "latency_ms": {
+    "count": 39,
+    "avg": 2092.15,
+    "p50": 1.1,
+    "max": 9312.47
+  },
+  "alerts": [
+    {
+      "metric": "block_rate",
+      "value": 0.5128,
+      "threshold": 0.5,
+      "message": "Block rate 51% > 50% — possible attack campaign or over-blocking guardrail."
+    },
+    {
+      "metric": "rate_limit_hits",
+      "value": 5,
+      "threshold": 5,
+      "message": "5 rate-limit hits ≥ 5 — flooding / cost attack suspected."
+    }
+  ],
+  "generated_at": "2026-11-19T14:37:44.698196+00:00",
+  "thresholds": {
+    "block_rate": 0.5,
+    "rate_limit_hits": 5,
+    "judge_fail_rate": 0.3
+  }
+}

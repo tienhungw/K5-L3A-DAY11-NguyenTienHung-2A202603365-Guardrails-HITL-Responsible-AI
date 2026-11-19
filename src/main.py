@@ -92,7 +92,10 @@ async def part4_attacks():
     from attacks.attacks import run_attacks, save_attack_results
 
     red_default, red_default_runner = create_red_agent_default()
-    await test_agent(red_default, red_default_runner)
+    try:
+        await test_agent(red_default, red_default_runner)
+    except Exception as e:  # quick smoke only — provider hiccups must not abort CP4
+        print(f"(quick test skipped: {type(e).__name__}: {str(e)[:120]})")
 
     print("\n--- Attacks on Red ---")
     unsafe_results = await run_attacks(
